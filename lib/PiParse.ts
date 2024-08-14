@@ -8,16 +8,19 @@ const ENTRY_SPLITTER = ',';
 const PARAMETER_SPLITTER = '/';
 
 // Main export type
+type PARSER_VALUES = PARSER_VALUE | PARSER_VALUE[]
+type PARSER_PARAMETERS = Record<
+    string, {
+        value: PARSER_VALUES;
+        options: PARSER_VALUES[];
+    }>
+
+
 export type PARSER = {
     name: string,
     key: string,
-    values: PARSER_VALUE[],
-    parameters: {
-        [Key: string]: {
-            value: PARSER_VALUE,
-            options: PARSER_VALUE[]
-        }
-    }
+    values: PARSER_VALUES[],
+    parameters: PARSER_PARAMETERS
 }
 
 // Main function
@@ -29,9 +32,13 @@ export function PiParse(value: string): PARSER {
 
     const { name, key, values } = handleNameKeyValues(name_key_values);
 
-    const parameters: Record<string, { value: PARSER_VALUE; options: PARSER_VALUE[]; }> = handleParametersAndOptions(parameters_values);
+    const parameters: PARSER_PARAMETERS = handleParametersAndOptions(parameters_values);
 
     return { name, key, values, parameters }
+}
+
+export function PiParseParameters(value: string, keys?: string[]): PARSER_PARAMETERS {
+    return handleParametersAndOptions(value, keys);
 }
 
 function handleNameKeyValues(name_key_values: string) {
@@ -45,12 +52,32 @@ function handleNameKeyValues(name_key_values: string) {
     return { name, key, values }
 }
 
-function handleParametersAndOptions(parameters_values: string) {
+function handleParametersAndOptions(parameters_values: string, keys?: string[]) {
     // The second part of the string are the parameters
     // <key1>=<value>[\,...<values>],<key2>=<value>[\,...<values>]
-    const data = splitValues(parameters_values, ENTRY_SPLITTER);
+    let data: string[]
+    if (keys === undefined || keys.length === 0) {
+        data = splitValues(parameters_values, ENTRY_SPLITTER);
+    } else {
+        // split at every keys.
+        // This way we can parse the parameters of a specific key
+        data = parameters_values
+            .split(new RegExp(`(?=${keys.join('|')})`))
+            .map((value: string) => {
+                let result = value.trim()
+                if (result.startsWith(',')) {
+                    result = result.slice(1).trim()
+                }
+                if (result.endsWith(',')) {
+                    result = result.slice(0, -1);
+                }
 
-    const parameters: Record<string, { value: PARSER_VALUE; options: PARSER_VALUE[]; }> = {};
+                return splitValues(result, ENTRY_SPLITTER).join(ENTRY_SPLITTER);
+            });
+    }
+
+    const parameters: PARSER_PARAMETERS = {};
+
     data.forEach(entry => {
         // an entry is a key-value pair or a simple trigger
         const { key, value } = splitKeyValuePair(entry);
@@ -66,7 +93,6 @@ function handleParametersAndOptions(parameters_values: string) {
         }
 
         const [v, ...options] = value.split(PARAMETER_SPLITTER);
-
         parameters[key] = {
             value: convertValue(v),
             options: options.map(value => convertValue(value))

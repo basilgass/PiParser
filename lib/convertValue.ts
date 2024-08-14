@@ -8,7 +8,7 @@ export type PARSER_VALUE = number | string | boolean | XY | DOMAIN | RANGE;
  * @param value The value to convert.
  * @returns The number.
  */
-export function convertValue(value: string): PARSER_VALUE {
+export function convertValue(value: string): PARSER_VALUE | PARSER_VALUE[] {
     // It's a simple toggle key: set it to true.
     if (value === '') return true;
 
@@ -63,6 +63,14 @@ export function convertValue(value: string): PARSER_VALUE {
             max: Math.max(v1, v2),
             step: Math.max(stepN, minStep)
         };
+    }
+
+    // If it starts and ends with "[...]", it's an array
+    if (value.startsWith('[') && value.endsWith(']')) {
+        return value
+            .slice(1, -1)
+            .split(',')
+            .map(convertValue) as PARSER_VALUE[]
     }
 
     // It's a string

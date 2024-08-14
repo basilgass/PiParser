@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 import { splitKeyValuePair } from "../lib/splitKeyValuePair"
 import { splitValues } from "../lib/splitValues"
 import { convertValue } from "../lib/convertValue"
-import { PiParse } from "../lib/PiParse"
+import { PiParse, PiParseParameters } from "../lib/PiParse"
 
 describe('Split entries', () => {
     it('should get the key and value from a string', () => {
@@ -192,5 +192,32 @@ describe('Parsing complete', () => {
 
         expect(result.parameters).toHaveProperty('length')
         expect(result.parameters.length.value).toEqual(7 / 3)
+    })
+
+    it('should parse only parameters', () => {
+        const entry = 'camera=[1,2,3,4]/10,fog,width=3:4/hello,position=3;-2'
+
+        const result = PiParseParameters(entry, ['camera', 'fog', 'width', 'position'])
+
+        expect(result).toHaveProperty('camera')
+        expect(result.camera.value).toHaveLength(4)
+        if (Array.isArray(result.camera.value) && result.camera.value.length === 4) {
+            expect(result.camera.value[0]).toBe(1)
+            expect(result.camera.value[1]).toBe(2)
+            expect(result.camera.value[2]).toBe(3)
+            expect(result.camera.value[3]).toBe(4)
+        }
+        expect(result.camera.options).toHaveLength(1)
+        expect(result.camera.options[0]).toBe(10)
+    })
+
+    it('should parse parameters withouth keys', () => {
+        const entry = 'camera=ortho/10,fog,width=3:4/hello,position=3;-2'
+
+        const result = PiParseParameters(entry)
+
+        expect(result).toHaveProperty('camera')
+        expect(result.camera.value).toBe('ortho')
+        expect(result.camera.options).toHaveLength(1)
     })
 })
