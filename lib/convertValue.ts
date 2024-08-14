@@ -65,7 +65,6 @@ export function convertValue(value: string): PARSER_VALUE {
         };
     }
 
-
-
-    return false
+    // It's a string
+    return value
 }

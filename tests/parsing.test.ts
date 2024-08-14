@@ -150,7 +150,7 @@ describe('Converting value', () => {
 
 describe('Parsing complete', () => {
     it('should parse a complete entry with parameters', () => {
-        const entry = 'name=key 12->hello=12,label,world=12:13\\0.75,trigger'
+        const entry = 'name=key 12->hello=12,label,world=12:13/0.75,trigger'
 
         const result = parse(entry)
 
@@ -170,5 +170,27 @@ describe('Parsing complete', () => {
         expect(result.parameters).toHaveProperty('trigger')
         expect(result.parameters.trigger.value).toBe(true)
 
+    })
+
+    it('should parse a complete entry for a function', () => {
+        const entry = "f(x)=plot 3x-5y+5=0->color=red/0.5,w=2,length=7/3"
+
+        const result = parse(entry)
+
+        expect(result.name).toBe('f(x)')
+        expect(result.key).toBe('plot')
+        expect(result.values[0]).toEqual('3x-5y+5=0')
+
+        expect(result.parameters).toHaveProperty('color')
+
+        expect(result.parameters.color.value).toBe('red')
+        expect(result.parameters.color.options).toHaveLength(1)
+        expect(result.parameters.color.options[0]).toBe(0.5)
+
+        expect(result.parameters).toHaveProperty('w')
+        expect(result.parameters.w.value).toBe(2)
+
+        expect(result.parameters).toHaveProperty('length')
+        expect(result.parameters.length.value).toEqual(7 / 3)
     })
 })

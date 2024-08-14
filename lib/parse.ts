@@ -5,6 +5,7 @@ import { splitKeyValuePair } from "./splitKeyValuePair";
 // Default parser splitter
 const MAIN_SPLITTER = '->';
 const ENTRY_SPLITTER = ',';
+const PARAMETER_SPLITTER = '/';
 
 // Main export type
 export type PARSER = {
@@ -55,7 +56,18 @@ function handleParametersAndOptions(parameters_values: string) {
     data.forEach(entry => {
         // an entry is a key-value pair or a simple trigger
         const { key, value } = splitKeyValuePair(entry);
-        const [v, ...options] = value.split('\\');
+
+        // There is a special case where the value is a fraction a/b.
+        // It must not be split by the PARAMETER_SPLITTER
+        if (value.match(/^[-.\d]+\/[-.\d]+$/)) {
+            parameters[key] = {
+                value: convertValue(value),
+                options: []
+            };
+            return;
+        }
+
+        const [v, ...options] = value.split(PARAMETER_SPLITTER);
 
         parameters[key] = {
             value: convertValue(v),
