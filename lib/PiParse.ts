@@ -21,7 +21,7 @@ export type PARSER = {
 }
 
 // Main function
-export function parse(value: string): PARSER {
+export function PiParse(value: string): PARSER {
 
     // Split to the MAIN_SPLITTER
     // name=key <value>[,...<values>]-><key1>=<value>[\,...<values>],<key2>=<value>[\,...<values>]
@@ -33,8 +33,6 @@ export function parse(value: string): PARSER {
 
     return { name, key, values, parameters }
 }
-
-
 
 function handleNameKeyValues(name_key_values: string) {
     const [name_key, ...valuesSplitted] = name_key_values.split(' ');

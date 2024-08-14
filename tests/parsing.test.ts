@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 import { splitKeyValuePair } from "../lib/splitKeyValuePair"
 import { splitValues } from "../lib/splitValues"
 import { convertValue } from "../lib/convertValue"
-import { parse } from "../lib/parse"
+import { PiParse } from "../lib/PiParse"
 
 describe('Split entries', () => {
     it('should get the key and value from a string', () => {
@@ -152,7 +152,7 @@ describe('Parsing complete', () => {
     it('should parse a complete entry with parameters', () => {
         const entry = 'name=key 12->hello=12,label,world=12:13/0.75,trigger'
 
-        const result = parse(entry)
+        const result = PiParse(entry)
 
         expect(result.name).toBe('name')
         expect(result.key).toBe('key')
@@ -175,7 +175,7 @@ describe('Parsing complete', () => {
     it('should parse a complete entry for a function', () => {
         const entry = "f(x)=plot 3x-5y+5=0->color=red/0.5,w=2,length=7/3"
 
-        const result = parse(entry)
+        const result = PiParse(entry)
 
         expect(result.name).toBe('f(x)')
         expect(result.key).toBe('plot')

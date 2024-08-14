@@ -53,7 +53,7 @@ export function convertValue(value: string): PARSER_VALUE {
         const [v1, v2, step] = value.split(':').map(Number);
         const v1n = Number(v1);
         const v2n = Number(v2);
-        const stepn = Number(step);
+        const stepN = Number(step);
 
         const dx = v2n - v1n;
         const minStep = dx / 100;
@@ -61,7 +61,7 @@ export function convertValue(value: string): PARSER_VALUE {
         return {
             min: Math.min(v1, v2),
             max: Math.max(v1, v2),
-            step: Math.max(stepn, minStep)
+            step: Math.max(stepN, minStep)
         };
     }
 
