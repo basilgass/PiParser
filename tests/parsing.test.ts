@@ -4,6 +4,11 @@ import { splitValues } from "../lib/splitValues"
 import { convertValue } from "../lib/convertValue"
 import { PiParse, PiParseParameters } from "../lib/PiParse"
 
+export const PARSER_PARAMETERS_KEYS = [
+    'ppu', 'x', 'y', 'grid', 'axis', 'label', 'tex', 'points', 'no-points', 'subgrid'
+]
+
+
 describe('Split entries', () => {
     it('should get the key and value from a string', () => {
         const str = 'key=value'
@@ -219,5 +224,14 @@ describe('Parsing complete', () => {
         expect(result).toHaveProperty('camera')
         expect(result.camera.value).toBe('ortho')
         expect(result.camera.options).toHaveLength(1)
+    })
+
+    it('should parse a real world PiDraw example', () => {
+        const entry = 'x=-11:11,y=-11:11,axis,tex'
+        const keys = PARSER_PARAMETERS_KEYS
+
+        const result = PiParseParameters(entry, keys)
+
+        console.log(result);
     })
 })

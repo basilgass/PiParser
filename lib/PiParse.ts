@@ -62,7 +62,7 @@ function handleParametersAndOptions(parameters_values: string, keys?: string[]) 
         // split at every keys.
         // This way we can parse the parameters of a specific key
         data = parameters_values
-            .split(new RegExp(`(?=${keys.join('|')})`))
+            .split(new RegExp(`(?=${ENTRY_SPLITTER}${keys.join(`|${ENTRY_SPLITTER}`)})`))
             .map((value: string) => {
                 let result = value.trim()
                 if (result.startsWith(',')) {
