@@ -8,8 +8,8 @@ const ENTRY_SPLITTER = ',';
 const PARAMETER_SPLITTER = '/';
 
 // Main export type
-type PARSER_VALUES = PARSER_VALUE | PARSER_VALUE[]
-type PARSER_PARAMETERS = Record<
+export type PARSER_VALUES = PARSER_VALUE | PARSER_VALUE[]
+export type PARSER_PARAMETERS = Record<
     string, {
         value: PARSER_VALUES;
         options: PARSER_VALUES[];
