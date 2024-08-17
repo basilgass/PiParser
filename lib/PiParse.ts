@@ -24,11 +24,14 @@ export type PARSER = {
 }
 
 // Main function
-export function PiParse(value: string): PARSER {
+type STRING_CB = (line: string) => string
+export function PiParse(value: string, formatter?: STRING_CB): PARSER {
 
     // Split to the MAIN_SPLITTER
     // name=key <value>[,...<values>]-><key1>=<value>[\,...<values>],<key2>=<value>[\,...<values>]
-    const [name_key_values, parameters_values] = value.split(MAIN_SPLITTER);
+    const [name_key_values_raw, parameters_values] = value.split(MAIN_SPLITTER);
+
+    const name_key_values = formatter ? formatter(name_key_values_raw) : name_key_values_raw.trim();
 
     const { name, key, values } = handleNameKeyValues(name_key_values);
 

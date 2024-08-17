@@ -203,8 +203,9 @@ describe('Parsing complete', () => {
         const entry = "A=point 1;-2"
         const result = PiParse(entry)
 
-        console.log(result);
-
+        expect(result.name).toBe('A')
+        expect(result.key).toBe('point')
+        expect(result.values[0]).toEqual({ x: 1, y: -2 })
     })
 
     it('should parse only parameters', () => {
@@ -240,6 +241,34 @@ describe('Parsing complete', () => {
 
         const result = PiParseParameters(entry, keys)
 
-        console.log(result);
+        expect(result).toHaveProperty('x')
+        expect(result.x.value).toEqual({ min: -11, max: 11, axis: 'x' })
+        expect(result.x.options).toHaveLength(0)
+
+        expect(result).toHaveProperty('y')
+        expect(result.y.value).toEqual({ min: -11, max: 11, axis: 'x' })
+        expect(result.y.options).toHaveLength(0)
+
+        expect(result).toHaveProperty('axis')
+        expect(result.axis.value).toBe(true)
+
+        expect(result).toHaveProperty('tex')
+        expect(result.tex.value).toBe(true)
+    })
+
+    it('should work with a formatter', () => {
+        const entry = 'A(1,3)'
+
+        const formatter = (str: string) => {
+            return str.replace('(', '=point ').replace(')', '')
+        }
+
+        const result = PiParse(entry, formatter)
+
+        expect(result.name).toBe('A')
+        expect(result.key).toBe('point')
+        expect(result.values).toHaveLength(2)
+        expect(result.values[0]).toBe(1)
+        expect(result.values[1]).toBe(3)
     })
 })
