@@ -199,6 +199,14 @@ describe('Parsing complete', () => {
         expect(result.parameters.length.value).toEqual(7 / 3)
     })
 
+    it('should parse a complete entry without parameters', () => {
+        const entry = "A=point 1;-2"
+        const result = PiParse(entry)
+
+        console.log(result);
+
+    })
+
     it('should parse only parameters', () => {
         const entry = 'camera=[1,2,3,4]/10,fog,width=3:4/hello,position=3;-2'
 

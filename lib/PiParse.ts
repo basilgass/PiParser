@@ -52,7 +52,9 @@ function handleNameKeyValues(name_key_values: string) {
     return { name, key, values }
 }
 
-function handleParametersAndOptions(parameters_values: string, keys?: string[]) {
+function handleParametersAndOptions(parameters_values: string | undefined, keys?: string[]) {
+    if (parameters_values === undefined) { return {} }
+
     // The second part of the string are the parameters
     // <key1>=<value>[\,...<values>],<key2>=<value>[\,...<values>]
     let data: string[]
