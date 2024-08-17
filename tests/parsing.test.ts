@@ -2,12 +2,13 @@ import { describe, expect, it } from "vitest"
 import { splitKeyValuePair } from "../lib/splitKeyValuePair"
 import { splitValues } from "../lib/splitValues"
 import { convertValue } from "../lib/convertValue"
-import { PiParse, PiParseParameters } from "../lib/PiParse"
+import { PiParse } from "../lib"
 
 export const PARSER_PARAMETERS_KEYS = [
     'ppu', 'x', 'y', 'grid', 'axis', 'label', 'tex', 'points', 'no-points', 'subgrid'
 ]
 
+const parser = new PiParse()
 
 describe('Split entries', () => {
     it('should get the key and value from a string', () => {
@@ -157,7 +158,7 @@ describe('Parsing complete', () => {
     it('should parse a complete entry with parameters', () => {
         const entry = 'name=key 12->hello=12,label,world=12:13/0.75,trigger'
 
-        const result = PiParse(entry)
+        const result = parser.parse(entry)
 
         expect(result.name).toBe('name')
         expect(result.key).toBe('key')
@@ -180,7 +181,7 @@ describe('Parsing complete', () => {
     it('should parse a complete entry for a function', () => {
         const entry = "f(x)=plot 3x-5y+5=0->color=red/0.5,w=2,length=7/3"
 
-        const result = PiParse(entry)
+        const result = parser.parse(entry)
 
         expect(result.name).toBe('f(x)')
         expect(result.key).toBe('plot')
@@ -201,7 +202,7 @@ describe('Parsing complete', () => {
 
     it('should parse a complete entry without parameters', () => {
         const entry = "A=point 1;-2"
-        const result = PiParse(entry)
+        const result = parser.parse(entry)
 
         expect(result.name).toBe('A')
         expect(result.key).toBe('point')
@@ -211,7 +212,7 @@ describe('Parsing complete', () => {
     it('should parse only parameters', () => {
         const entry = 'camera=[1,2,3,4]/10,fog,width=3:4/hello,position=3;-2'
 
-        const result = PiParseParameters(entry, ['camera', 'fog', 'width', 'position'])
+        const result = parser.parameters(entry, ['camera', 'fog', 'width', 'position'])
 
         expect(result).toHaveProperty('camera')
         expect(result.camera.value).toHaveLength(4)
@@ -228,7 +229,7 @@ describe('Parsing complete', () => {
     it('should parse parameters withouth keys', () => {
         const entry = 'camera=ortho/10,fog,width=3:4/hello,position=3;-2'
 
-        const result = PiParseParameters(entry)
+        const result = parser.parameters(entry)
 
         expect(result).toHaveProperty('camera')
         expect(result.camera.value).toBe('ortho')
@@ -239,7 +240,7 @@ describe('Parsing complete', () => {
         const entry = 'x=-11:11,y=-11:11,axis,tex'
         const keys = PARSER_PARAMETERS_KEYS
 
-        const result = PiParseParameters(entry, keys)
+        const result = parser.parameters(entry, keys)
 
         expect(result).toHaveProperty('x')
         expect(result.x.value).toEqual({ min: -11, max: 11, axis: 'x' })
@@ -263,7 +264,10 @@ describe('Parsing complete', () => {
             return str.replace('(', '=point ').replace(')', '')
         }
 
-        const result = PiParse(entry, formatter)
+        parser.formatter = formatter
+        const result = parser.parse(entry)
+
+        parser.formatter = undefined
 
         expect(result.name).toBe('A')
         expect(result.key).toBe('point')
@@ -275,7 +279,7 @@ describe('Parsing complete', () => {
     it('should parse values with zero', () => {
         const entry = 'A=point 0,0'
 
-        const result = PiParse(entry)
+        const result = parser.parameters(entry)
         console.log(result);
     })
 })
