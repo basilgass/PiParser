@@ -10,7 +10,7 @@ export function convertValue(value: string): PARSER_VALUE | PARSER_VALUE[] {
     if (value === '') return true;
 
     // The string is a number: convert it to a number.
-    if (Number(value)) return parseFloat(value)
+    if (!isNaN(Number(value))) return parseFloat(value)
 
     // The string is a fraction : a/b
     // Detect with a regexp

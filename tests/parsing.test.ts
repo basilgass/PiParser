@@ -271,4 +271,11 @@ describe('Parsing complete', () => {
         expect(result.values[0]).toBe(1)
         expect(result.values[1]).toBe(3)
     })
+
+    it('should parse values with zero', () => {
+        const entry = 'A=point 0,0'
+
+        const result = PiParse(entry)
+        console.log(result);
+    })
 })
