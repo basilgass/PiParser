@@ -1,6 +1,7 @@
-import { convertValue, PARSER_VALUE } from "./convertValue"
+import { convertValue } from "./convertValue"
 import { splitValues } from "./splitValues";
 import { splitKeyValuePair } from "./splitKeyValuePair";
+import type { PARSER, PARSER_PARAMETERS } from "./PiParserTypes";
 
 // Default parser splitter
 const MAIN_SPLITTER = '->';
@@ -8,20 +9,6 @@ const ENTRY_SPLITTER = ',';
 const PARAMETER_SPLITTER = '/';
 
 // Main export type
-export type PARSER_VALUES = PARSER_VALUE | PARSER_VALUE[]
-export type PARSER_PARAMETERS = Record<
-    string, {
-        value: PARSER_VALUES;
-        options: PARSER_VALUES[];
-    }>
-
-
-export type PARSER = {
-    name: string,
-    key: string,
-    values: PARSER_VALUES[],
-    parameters: PARSER_PARAMETERS
-}
 
 // Main function
 type STRING_CB = (line: string) => string

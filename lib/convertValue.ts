@@ -1,8 +1,5 @@
-export type XY = { x: number, y: number };
-export type DOMAIN = { min: number, max: number, axis: string };
-export type RANGE = { min: number, max: number, step: number };
+import type { PARSER_VALUE } from "./PiParserTypes";
 
-export type PARSER_VALUE = number | string | boolean | XY | DOMAIN | RANGE;
 /**
  * Converts a value to a PARSER_VALUE.
  * @param value The value to convert.

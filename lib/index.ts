@@ -8,3 +8,4 @@
  * 
  */
 export * from './PiParse'
+export type * from './PiParserTypes'
