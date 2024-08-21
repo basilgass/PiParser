@@ -117,21 +117,61 @@ export class PiParse {
         if (keys === undefined || keys.length === 0) {
             data = splitValues(parameters_values, this.#ENTRY_SPLITTER);
         } else {
-            // split at every keys.
-            // This way we can parse the parameters of a specific key
-            data = parameters_values
-                .split(new RegExp(`(?=${this.#ENTRY_SPLITTER}${keys.join(`|${this.#ENTRY_SPLITTER}`)})`))
-                .map((value: string) => {
-                    let result = value.trim()
-                    if (result.startsWith(',')) {
-                        result = result.slice(1).trim()
-                    }
-                    if (result.endsWith(',')) {
-                        result = result.slice(0, -1);
-                    }
+            // The idea is to split the string at every key
+            // First, split at "ENTRY_SPLITTER"
+            // Loop through every items and determine if it is equal to a key or starts with <key> =
+            // If it's a key without "=", it's a trigger and means it's alone.
+            // If it's a key with "=", it's a key-value pair : join everything after until a new key.
+            const items = splitValues(parameters_values, this.#ENTRY_SPLITTER);
 
-                    return splitValues(result, this.#ENTRY_SPLITTER).join(this.#ENTRY_SPLITTER);
-                });
+            const keysWithEquals = keys.map(key => `${key}=`);
+
+            data = []
+            items.forEach((item) => {
+                if (keys.includes(item)) {
+                    // It's a simple trigger.
+                    data.push(item)
+                } else if (item.includes('=')) {
+                    // It's a key with an equal sign
+                    const keyEqual = item.split('=')[0] + '=';
+
+                    if (keysWithEquals.includes(keyEqual)) {
+                        data.push(item)
+                    }
+                } else {
+                    // It's any value.
+                    // If the previous item is a key with "=", we must join the two.
+                    if (data[data.length - 1].includes('=')) {
+                        data[data.length - 1] += `,${item}`;
+                    } else {
+                        data.push(item);
+                    }
+                }
+            })
+
+            console.log(data);
+            // console.log(data);
+
+
+            // // split at every keys.
+            // // This way we can parse the parameters of a specific key
+            // data = parameters_values
+            //     .split(new RegExp(`(?=${this.#ENTRY_SPLITTER}${keys.join(`|${this.#ENTRY_SPLITTER}`)})`))
+            //     .map((value: string) => {
+            //         let result = value.trim()
+            //         if (result.startsWith(',')) {
+            //             result = result.slice(1).trim()
+            //         }
+            //         if (result.endsWith(',')) {
+            //             result = result.slice(0, -1);
+            //         }
+
+            //         return splitValues(result, this.#ENTRY_SPLITTER).join(this.#ENTRY_SPLITTER);
+            //     });
+
+            // console.log(data);
+
+            // console.log(data);
         }
 
         const parameters: PARSER_PARAMETERS = {};
@@ -159,4 +199,3 @@ export class PiParse {
         return parameters;
     }
 }
-

@@ -210,9 +210,9 @@ describe('Parsing complete', () => {
     })
 
     it('should parse only parameters', () => {
-        const entry = 'camera=[1,2,3,4]/10,fog,width=3:4/hello,position=3;-2'
+        const entry = 'label,camera=[1,2,3,4]/10,fog,width=3:4/hello,position=3;-2'
 
-        const result = parser.parameters(entry, ['camera', 'fog', 'width', 'position'])
+        const result = parser.parameters(entry, ['camera', 'fog', 'width', 'position', 'label'])
 
         expect(result).toHaveProperty('camera')
         expect(result.camera.value).toHaveLength(4)
@@ -281,5 +281,16 @@ describe('Parsing complete', () => {
 
         const result = parser.parameters(entry)
         console.log(result);
+    })
+
+    it('should parse parameters with an unknown key', () => {
+        const entry = 'axis,camera=[12,20],gri'
+
+        const result = parser.parameters(entry, ['axis', 'grid', 'camera'])
+
+        console.log(result);
+        expect(result).toHaveProperty('axis')
+        expect(result.axis.value).toBeTruthy()
+        expect(result).toHaveProperty('camera')
     })
 })
