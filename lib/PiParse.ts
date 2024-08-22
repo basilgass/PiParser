@@ -148,30 +148,6 @@ export class PiParse {
                     }
                 }
             })
-
-            console.log(data);
-            // console.log(data);
-
-
-            // // split at every keys.
-            // // This way we can parse the parameters of a specific key
-            // data = parameters_values
-            //     .split(new RegExp(`(?=${this.#ENTRY_SPLITTER}${keys.join(`|${this.#ENTRY_SPLITTER}`)})`))
-            //     .map((value: string) => {
-            //         let result = value.trim()
-            //         if (result.startsWith(',')) {
-            //             result = result.slice(1).trim()
-            //         }
-            //         if (result.endsWith(',')) {
-            //             result = result.slice(0, -1);
-            //         }
-
-            //         return splitValues(result, this.#ENTRY_SPLITTER).join(this.#ENTRY_SPLITTER);
-            //     });
-
-            // console.log(data);
-
-            // console.log(data);
         }
 
         const parameters: PARSER_PARAMETERS = {};
