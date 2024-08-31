@@ -1,6 +1,6 @@
 {
   "name": "piparser",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "A simple parser for the PI language",
   "type": "module",
   "exports": {
