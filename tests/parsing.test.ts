@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest"
-import { splitKeyValuePair } from "../lib/splitKeyValuePair"
-import { splitValues } from "../lib/splitValues"
-import { convertValue } from "../lib/convertValue"
-import { PiParse } from "../lib"
+import { splitKeyValuePair } from "../src/splitKeyValuePair"
+import { splitValues } from "../src/splitValues"
+import { convertValue } from "../src/convertValue"
+import { PiParse } from "../src"
 
 export const PARSER_PARAMETERS_KEYS = [
     'ppu', 'x', 'y', 'grid', 'axis', 'label', 'tex', 'points', 'no-points', 'subgrid'
@@ -280,7 +280,7 @@ describe('Parsing complete', () => {
         const entry = 'A=point 0,0'
 
         const result = parser.parameters(entry)
-        console.log(result);
+        
     })
 
     it('should parse parameters with an unknown key', () => {

@@ -1,15 +1,28 @@
 {
   "name": "piparser",
   "version": "0.0.12",
+  "description": "A simple parser for the PI language",
   "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/piparser.js",
+      "types": "./types/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "types"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "dependency-cruise": "dependency-cruise -T dot -x node_modules -v -- src/index.ts  | dot -T svg > dependencies.svg"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
     "@types/eslint__js": "^8.42.3",
+    "dependency-cruiser": "^16.4.0",
     "eslint": "^9.9.0",
     "globals": "^15.9.0",
     "typescript": "^5.5.4",

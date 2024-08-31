@@ -4,8 +4,8 @@
  * @returns A tuple containing the key and value.
  */
 export function splitKeyValuePair(entry: string): { key: string, value: string } {
-    if (!entry.includes('=')) return { key: entry, value: '' };
-    const [key, ...values] = entry.split('=');
+    if (!entry.includes('=')) { return { key: entry, value: '' } }
+    const [key, ...values] = entry.split('=')
 
     return {
         key,
