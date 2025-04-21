@@ -3,6 +3,9 @@
   "version": "0.0.13",
   "description": "A simple parser for the PI language",
   "type": "module",
+  "main": "dist/piparser.js",
+  "module": "dist/piparser.js",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/piparser.js",
@@ -10,13 +13,11 @@
     }
   },
   "files": [
-    "dist",
-    "types"
+    "dist"
   ],
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
+    "build": "tsc --p ./tsconfig-build.json && vite build",    "preview": "vite preview",
     "dependency-cruise": "dependency-cruise -T dot -x node_modules -v -- src/index.ts  | dot -T svg > dependencies.svg"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
-import { defineConfig } from "vite"
-import { resolve } from "path";
-import dtsPlugin from "vite-plugin-dts";
+import {defineConfig} from "vite"
+import {resolve} from "path"
+import dtsPlugin from "vite-plugin-dts"
 
 export default defineConfig({
     build: {
@@ -10,15 +10,13 @@ export default defineConfig({
             entry: resolve(__dirname, "src/index.ts"),
             formats: ["es"],
         },
+        sourcemap: true,
+        emptyOutDir: true,
     },
     plugins: [
         dtsPlugin({
-            beforeWriteFile: (filePath, content) => (
-                {
-                    filePath: filePath.replace("index.d.ts", "piparser.d.ts"),
-                    content,
-                }),
-            include: ['lib', "es2022"]
+            include: ['lib', "es2022"],
+            outDir: "dist",
         }), // generate .d.ts files for the lib folder
     ]
 })
