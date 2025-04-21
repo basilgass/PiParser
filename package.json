@@ -12,9 +12,6 @@
       "types": "./types/index.d.ts"
     }
   },
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc --p ./tsconfig-build.json && vite build",
