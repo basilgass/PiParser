@@ -1,6 +1,6 @@
 {
   "name": "piparser",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "A simple parser for the PI language",
   "type": "module",
   "main": "dist/piparser.js",
