@@ -1,3 +1,5 @@
+/** @type {import('vite').UserConfig} */
+
 import {defineConfig} from "vite"
 import {resolve} from "path"
 import dtsPlugin from "vite-plugin-dts"
@@ -15,7 +17,7 @@ export default defineConfig({
     },
     plugins: [
         dtsPlugin({
-            include: ['lib', "es2022"],
+            include: ['src', "es2022"],
             outDir: "dist",
         }), // generate .d.ts files for the lib folder
     ]

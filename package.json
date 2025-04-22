@@ -1,6 +1,8 @@
 {
   "name": "piparser",
   "version": "0.0.16",
+  "author": "Basil Gass",
+  "license": "MIT",
   "description": "A simple parser for the PI language",
   "type": "module",
   "main": "dist/piparser.js",
@@ -8,15 +10,23 @@
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./types/index.d.ts",
       "import": "./dist/piparser.js",
-      "types": "./types/index.d.ts"
+      "require": "./dist/piparser.js"
     }
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc --p ./tsconfig-build.json && vite build",
     "preview": "vite preview",
     "dependency-cruise": "dependency-cruise -T dot -x node_modules -v -- src/index.ts  | dot -T svg > dependencies.svg"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/basilgass/PiParser.git"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
